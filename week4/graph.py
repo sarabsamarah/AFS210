@@ -1,10 +1,27 @@
 
-graph = {
-
-
+# adjacency list / directed graph
+adjList = {
+    "a" : ["c", "b", "d", "e", "f"],
+    "b" : ["c", "e"],
+    "c" : ["d"],
+    "d" : ["e"],
+    "e" : ["f"],
+    "f" : ["h", "g"],
+    "g" : ["f", "h"],
+    "h" : ["g", "f"],
+    "i" : []
 }
-
-
+# weight list
+adjWeight = {
+    "a": {"c": 1, "b": 2, "d": 3, "e": 9, "f": 20},
+    "b": {"c": 4, "e": 3},
+    "c": {"d": 8},
+    "d": {"e": 7},
+    "e": {"f": 5},
+    "f": {"h": 2, "g": 2},
+    "g": {"f": 1, "h": 6},
+    "h": {"g": 8, "f": 9}
+    }
 # finds shortest path between 2 nodes of a graph using BFS
 def breadth_first_search(graph, start, goal):
     # keep track of explored nodes
@@ -47,7 +64,7 @@ def dijsktra(graph, initial, end):
     shortest_paths = {initial: (None, 0)}
     current_node = initial
     visited = set()
-    
+
     while current_node != end:
         visited.add(current_node)
         destinations = graph[current_node]
@@ -76,10 +93,15 @@ def dijsktra(graph, initial, end):
         current_node = next_node
     # Reverse path
     path = path[::-1]
-    return path
+    return path, weight
 
-def routeCost(path):
-    cost = 0
-    for i in range(len(path)-1):
-        cost += graph[path[i][i+1]]
-    return cost 
+# fastest path
+print("Shortest Path between A and H is:")
+print(breadth_first_search(adjWeight, "a", "h"))
+
+# cheapest path
+print("Cheapest path between A and H is:")
+print(dijsktra(adjWeight, "a", "h"))
+
+print("The cost of going between A and H is:")
+print(dijsktra(adjWeight, "a", "h" ))
